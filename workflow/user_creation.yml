@@ -1,0 +1,63 @@
+name: user_creation
+
+env:
+  SNOWSQL_ACCOUNT: ${{vars.SNOWSQL_ACCOUNT}}
+  SNOWSQL_USER: ${{vars.SNOWSQL_USER}}
+  SNOWSQL_PWD: ${{secrets.SNOWSQL_PWD}}
+
+on:
+  workflow_dispatch:
+    inputs:
+      URL:
+        description: 'URL'
+        required: true
+      Passwords:
+        description: 'Passwords'
+        required: true 
+      User:
+        description: 'Name of the user'
+        required: true
+      User_password:
+        description: 'Password of the user'
+        required: true
+
+jobs:
+  executequery:
+    name: user creation in the sub account
+    runs-on: ubuntu-latest
+    steps:
+      - name: Input Admin password and user name 
+        if: github.event_name == 'workflow_dispatch'
+        id: input_step
+        run: 
+          echo "URL=${{github.event.inputs.url}}" >> $GITHUB_ENV
+          echo "PASSWORDS=${{github.event.inputs.Passwords}}" >> $GITHUB_ENV
+          echo "USER=${{github.event.inputs.user}}" >> $GITHUB_ENV
+          echo "USER_PASSWORD=${{github.event.inputs.user_password}}" >> $GITHUB_ENV   
+      
+      - name: Checkout
+        users: actions/checkout@v2
+
+      - name: Download Snowsql
+        run:
+          curl -O https://sfc-repo.snopwflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.9-linux_x86_64.bash
+
+      - name: Install Snowsql
+        run:
+          SNOWSQL_DEST=~/snowflake SNOWSQL_LOGIN_SHELL=~/.profile bash snowsql-1.2.9-linux_x86_64.bash
+      
+      -name: Test Installation
+        run: ~/snowflake/snowsql -v
+      
+      -name: user creation
+        run: 
+          SNOWSQL_ACCOUNT=${{env.URL}}
+          SNOWSQL_PWD=${{env.PASSWORDS}}
+          SNOWSQL_USER=ADMIN
+          SNOWSQL_ROLE=ACCOUNTADMIN;
+
+          CREATE USER IF NOT EXISTS ${{env.USER}} PASSWORD ="{env.USER_PASSWORD}" MUST_CHANGE_PASSWORD = TRUE;
+        EOF
+        done
+
+                   
