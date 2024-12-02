@@ -4,8 +4,8 @@ import os
 # Replace these with your repository details and workflow information
 OWNER = "GurramMeghana"
 REPO = "Streamlit"
-WORKFLOW_ID = ".yml"  # Use workflow ID or filename (e.g., "workflow.yml")
-BRANCH = "main"  # Branch to trigger the workflow
+WORKFLOW_ID = "user_creation.yml"  # Use workflow ID or filename (e.g., "workflow.yml")
+BRANCH = "dev"  # Branch to trigger the workflow
 
 # GitHub Token (App Installation Token or PAT)
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
@@ -23,7 +23,10 @@ HEADERS = {
 PAYLOAD = {
     "ref": BRANCH,
     "inputs": {  # Optional inputs if your workflow_dispatch accepts inputs
-        "example_input": "Triggering from Python"
+        "URL": "abc"
+        "Passwords":"abcad1"
+        "User":"abc_sa"
+        "User_password":"abcde2"
     }
 }
 
