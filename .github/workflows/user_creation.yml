@@ -41,7 +41,7 @@ jobs:
 
       - name: Download Snowsql
         run:
-          curl -O https://sfc-repo.snopwflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.9-linux_x86_64.bash
+          curl -O https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.9-linux_x86_64.bash
 
       - name: Install Snowsql
         run:
